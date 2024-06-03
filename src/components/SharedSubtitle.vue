@@ -1,5 +1,5 @@
 <template>
   <p class="mt-2 opacity-50">
-    This is the {{ $app.context }} page
+  最先进的开发工具
   </p>
 </template>

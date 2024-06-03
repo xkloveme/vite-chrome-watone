@@ -13,6 +13,7 @@ export async function getManifest() {
     name: pkg.displayName || pkg.name,
     version: pkg.version,
     description: pkg.description,
+    "devtools_page": "./dist/devtools/index.html",
     action: {
       default_icon: './assets/icon-512.png',
       default_popup: './dist/popup/index.html',
