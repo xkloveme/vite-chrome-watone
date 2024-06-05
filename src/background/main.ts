@@ -1,6 +1,7 @@
 import { onMessage, sendMessage } from 'webext-bridge/background'
 import type { Tabs } from 'webextension-polyfill'
-
+// @ts-ignore
+import ext from '../utils/ext';
 // only on dev mode
 if (import.meta.hot) {
   // @ts-expect-error for background HMR
@@ -52,3 +53,32 @@ onMessage('get-current-tab', async () => {
     }
   }
 })
+
+console.log("===🐛=== ~ browser:", browser);
+
+browser.webRequest.onCompleted.addListener(
+  async (details) => {
+      const tabId = details.tabId;
+      if (tabId > -1) {
+        await browser.scripting.executeScript({
+          target: { tabId: tabId },
+          func: fetchAndDecryptData,
+          args: [details.url, details.requestId]
+        });
+      }
+  },
+  { urls: ["<all_urls>"] }
+);
+
+async function fetchAndDecryptData(url, requestId) {
+  const response = await fetch(url);
+  const data = await response.text();
+  console.log("===🐛=== ~ fetchAndDecryptData ~ data:", data);
+  const decryptedData = decryptData(data);
+  await browser.storage.local.set({ [requestId]: decryptedData });
+}
+
+function decryptData(data) {
+  // 解密逻辑，替换为实际的解密算法
+  return atob(data);
+}

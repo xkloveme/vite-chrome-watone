@@ -105,6 +105,7 @@ export default defineConfig(({ command }) => ({
         options: r('src/options/index.html'),
         popup: r('src/popup/index.html'),
         devtools: r('src/devtools/index.html'),
+        panel: r('src/panel/index.html'),
       },
     },
   },
